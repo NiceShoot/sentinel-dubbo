@@ -5,6 +5,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcResult;
 
 /**
  * @author jiabing
@@ -17,9 +18,8 @@ public class NewDubboFallback implements DubboFallback {
 
     @Override
     public Result handle(Invoker<?> invoker, Invocation invocation, BlockException e) {
-        String methodName = invocation.getMethodName();
-        Result invoke = invoker.invoke(invocation);
-        return null;
+
+        return new RpcResult("dubbo error");
     }
 
 

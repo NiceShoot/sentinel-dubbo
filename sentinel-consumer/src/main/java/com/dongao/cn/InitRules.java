@@ -6,6 +6,8 @@ import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.slots.system.SystemRule;
+import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 import com.dongao.cn.config.NewDubboFallback;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -39,6 +41,9 @@ public class InitRules implements ApplicationListener<ContextRefreshedEvent> {
 
         //降级规则
         this.initFlowDeRule();
+
+        //系统保护
+        //this.initSystemRule();
 
         //启动zk监听
         //this.nodeChangeListen();
@@ -98,7 +103,7 @@ public class InitRules implements ApplicationListener<ContextRefreshedEvent> {
         FlowRule rule1 = new FlowRule();
         rule1.setResource("com.dongao.cn.service.TestRemoteService:getName()");
         //set threshold rt, 10 ms
-        rule1.setCount(2);
+        rule1.setCount(4);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rules.add(rule1);
         FlowRuleManager.loadRules(rules);
@@ -124,4 +129,17 @@ public class InitRules implements ApplicationListener<ContextRefreshedEvent> {
     }
 
 
+    /**
+     * 系统保护规则
+     */
+    private void initSystemRule() {
+        List<SystemRule> rules = new ArrayList<>();
+        SystemRule rule = new SystemRule();
+        rule.setHighestSystemLoad(3);
+        rule.setMaxThread(3);
+        rule.setQps(2);
+        rule.setAvgRt(2);
+        rules.add(rule);
+        SystemRuleManager.loadRules(rules);
+    }
 }

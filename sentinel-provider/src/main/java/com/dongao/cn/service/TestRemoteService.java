@@ -7,5 +7,6 @@ package com.dongao.cn.service;
  * @date 2018/12/6 16:59
  */
 public interface TestRemoteService {
+
     public String getName();
 }
