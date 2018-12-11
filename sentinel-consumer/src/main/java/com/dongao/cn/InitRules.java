@@ -1,10 +1,12 @@
 package com.dongao.cn;
 
+import com.alibaba.csp.sentinel.adapter.dubbo.fallback.DubboFallbackRegistry;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.dongao.cn.config.NewDubboFallback;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -40,6 +42,9 @@ public class InitRules implements ApplicationListener<ContextRefreshedEvent> {
 
         //启动zk监听
         //this.nodeChangeListen();
+
+        //配置dubbofallback
+        DubboFallbackRegistry.setConsumerFallback(new NewDubboFallback());
     }
 
 
